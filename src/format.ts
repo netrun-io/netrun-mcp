@@ -43,9 +43,9 @@ export function blockers(p: Project, links: Links): string[] {
   const out: string[] = []
   if (p.trial_stopped) {
     out.push(
-      'Stopped: the free running time for bots on the Free plan is over. ' +
-        `Only the human can fix this by switching to Pro: ${checkoutUrl(links, 'trial_over')} — ` +
-        'after payment the bot starts again automatically.',
+      'Not running: this account has no free running time for bots, and on the Free plan bots run only on a paid plan. ' +
+        `Only the human can fix this by choosing Pro or Max: ${links.appUrl}/upgrade — ` +
+        'after payment the bot starts automatically.',
     )
   }
   if (p.is_blocked) {
@@ -166,12 +166,26 @@ export function describeDomain(d: ProjectDomain): Record<string, unknown> {
   if (d.dns_records?.length) {
     out.dns_records = d.dns_records.map((r) => ({ type: r.type, name: r.name, value: r.value }))
   }
+  if (d.acme_records?.length) {
+    out.cloudflare_records = d.acme_records.map((r) => ({ type: r.type, name: r.name, value: r.value }))
+    out.cloudflare_note = CLOUDFLARE_NOTE
+  }
+  out.cloudflare_ready = Boolean(d.cert_via_dns)
+  if (d.behind_proxy && !d.cert_via_dns) out.behind_cloudflare = true
   if (d.checked && d.status !== 'verified') {
     out.points_at_now = d.found_ips ?? []
     out.should_point_at = d.expected_ips ?? []
   }
   return out
 }
+
+/** Зеркало `CLOUDFLARE_NOTE` в `api/infrastructure/mcp/format.py`. */
+export const CLOUDFLARE_NOTE =
+  'Only if the domain uses the Cloudflare proxy (orange cloud) or another ' +
+  'CDN in front of the site: add cloudflare_records as DNS only (grey ' +
+  'cloud), keep the A record pointing at the address from dns_records, ' +
+  'and choose SSL mode Full (strict) in Cloudflare. Then check again.'
+
 
 export function describeTariff(t: Tariff, links: Links): Record<string, unknown> {
   const limit = (metric: string) => t.limits.find((l) => l.metric === metric)?.value ?? null
@@ -190,7 +204,12 @@ export function describeTariff(t: Tariff, links: Links): Record<string, unknown>
       'Bots and scripts cannot sleep, so they get a limited amount of free running time per account; after that they stop until the account switches to Pro.',
     ]
     const trial = t.nonweb_trial
-    if (trial) {
+    if (t.bot_paid_only) {
+      out.bot_free_time = {
+        available: false,
+        note: 'Bots on this account run only on the Pro and Max plans; websites stay free.',
+      }
+    } else if (trial) {
       out.bot_free_time = trial.exhausted
         ? { exhausted: true, upgrade: checkoutUrl(links, 'trial_over') }
         : trial.expires_at

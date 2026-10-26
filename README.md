@@ -71,7 +71,7 @@ This package is a thin courier: it zips the folder (honouring `.gitignore`), sen
 
 Environment variables: `NETRUN_API_KEY` (required), `NETRUN_API_URL` (default `https://api.netrun.io/v1`), `NETRUN_APP_URL` (default `https://netrun.io`).
 
-- Registry: `io.github.fadeynotchenko/netrun`
-- Source: https://github.com/fadeynotchenko/netrun-mcp
+- Registry: `io.netrun/netrun`
+- Source: https://github.com/netrun-io/netrun-mcp
 
 MIT

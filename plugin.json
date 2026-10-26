@@ -1,14 +1,14 @@
 {
   "$schema": "https://agent-plugins.org/schemas/1.1.0/plugin.schema.json",
   "name": "netrun",
-  "version": "0.3.1",
+  "version": "0.4.0",
   "description": "Publish websites and Telegram bots to Netrun — upload a folder from your editor, get a URL",
   "author": {
     "name": "Netrun",
     "url": "https://netrun.io"
   },
   "homepage": "https://netrun.io/mcp",
-  "repository": "https://github.com/fadeynotchenko/netrun-mcp",
+  "repository": "https://github.com/netrun-io/netrun-mcp",
   "license": "MIT",
   "keywords": [
     "mcp",

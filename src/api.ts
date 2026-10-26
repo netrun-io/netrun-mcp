@@ -86,6 +86,12 @@ export type ProjectDomain = {
   checked: boolean
   found_ips: string[]
   expected_ips: string[]
+  /** Домен за прокси Cloudflare: CNAME `_acme-challenge` (и для www). */
+  acme_records?: DomainDnsRecord[]
+  /** Запись найдена — сертификат через нашу зону, облачко можно включать. */
+  cert_via_dns?: boolean
+  /** Только в ответе проверки: A-записи домена ведут в Cloudflare. */
+  behind_proxy?: boolean
 }
 
 export type DomainsState = { domains: ProjectDomain[] }
@@ -111,6 +117,8 @@ export type Tariff = {
   limits: { metric: string; value: number | null; unit: string }[]
   renews_at: string | null
   nonweb_trial?: { seconds_total: number; expires_at: string | null; exhausted: boolean } | null
+  /** A/B-тест: бот у человека только на платном тарифе (Pro или Max). */
+  bot_paid_only?: boolean
   extra_slots: number
   follow_slots: number
   tier_prices: { tier_slug?: string; period: string; amount_minor: number; days?: number; sellable?: boolean }[]

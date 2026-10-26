@@ -1,19 +1,19 @@
 {
   "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
-  "name": "io.github.fadeynotchenko/netrun",
+  "name": "io.netrun/netrun",
   "title": "Netrun",
   "description": "Publish websites and Telegram bots to Netrun — upload a folder from your editor, get a URL",
   "repository": {
-    "url": "https://github.com/fadeynotchenko/netrun-mcp",
+    "url": "https://github.com/netrun-io/netrun-mcp",
     "source": "github"
   },
   "websiteUrl": "https://netrun.io/mcp",
-  "version": "0.3.1",
+  "version": "0.4.0",
   "packages": [
     {
       "registryType": "npm",
       "identifier": "netrun-mcp",
-      "version": "0.3.1",
+      "version": "0.4.0",
       "transport": {
         "type": "stdio"
       },

@@ -499,6 +499,10 @@ async function publish(api: NetrunApi, cfg: Config, args: PublishArgs): Promise<
       final.app_kind === 'web'
         ? `The site is live at ${final.host_url}. Tell the user the link.`
         : 'The bot is running — tell the user to message it. Free plan: it will stop when the free running time ends.'
+  } else if (final.status === 'stopped' && final.trial_stopped) {
+    out.next =
+      'Built, but not started: this account has no free running time for bots. Tell the user the bot is ready and starts by itself ' +
+      `once they choose Pro or Max at ${links.appUrl}/upgrade. Do not publish again.`
   } else if (final.status === 'stopped') {
     out.next = final.app_kind === 'script'
       ? 'The script ran and finished (exit code 0). For always-running processes make the program loop or wait.'
